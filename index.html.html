@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五年級自然：神秘天空好記心法（動畫互動加強版 v3）</title>
+<script type="text/javascript" src="https://gc.kes.v2.scr.kaspersky-labs.com/7EA5E9BB-55E1-4C31-9C21-4943DDFED2E4/main.js?attr=46fx-6KA_4CaEz9gvIDW8CLFWxUMjKxvFxVKiHBQPyKY0SmOcyFlQHJ28VbuSIKrjhuDwlbcQ4D0XJHNPtT2lXsIOR38lDYlnrDRc30D_7PH23mJfwMH3hSzOVAaCTuR9aAt4W4enp94DAEYd4VKafBVkaVBOYBe_yW3OLQOshr1UFMg6EdQxEqBx9HQ251haFVQRetj-AGCt29lUFM-8nx9adLhiwwDDesBAeDmhbtNHP_FmSE27_jxYTFpYJRgtKk9dLQRBVit4IPBmxFow-bHpqUPRBNhuU3UEK9QkePSxxtpHEWuxxU1MTwF1ks6HqJnoGE-hqb6fQAQKFoJNHICkfyT-JndM-LUaayCEHc" charset="UTF-8"></script><style>
+  :root {
+    --bg-cream: #fcfaf2;
+    --card-yellow: #fef5cf;
+    --border-yellow: #e8d58b;
+    --accent-teal: #1b8a99;
+    --accent-orange: #e67e22;
+    --accent-purple: #6c5ce7;
+    --text-dark: #2c2a29;
+    --text-muted: #5a5652;
+    --highlight-red: #c0392b;
+    --white: #ffffff;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background-color: var(--bg-cream);
+    color: var(--text-dark);
+    line-height: 1.7;
+    padding: 24px 16px 60px;
+  }
+
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* 頂部標題區 */
+  header {
+    text-align: center;
+    padding: 28px 20px;
+    background: var(--white);
+    border-radius: 16px;
+    border: 2px solid #ece6d5;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    margin-bottom: 28px;
+  }
+
+  header .badge {
+    display: inline-block;
+    background: var(--accent-teal);
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+  }
+
+  header h1 {
+    font-size: 1.9rem;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+  }
+
+  header .secret {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  header .secret span {
+    color: var(--accent-teal);
+    font-weight: 800;
+  }
+
+  /* 雙欄版面配置 */
+  .board-grid {
+    display: grid;
+    grid-template-columns: 1.38fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 840px) {
+    .board-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* 筆記區塊卡片 */
+  .note-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 22px 24px;
+    border: 1.5px solid #e6dfd1;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    margin-bottom: 22px;
+  }
+
+  .note-card h2 {
+    font-size: 1.3rem;
+    color: var(--accent-teal);
+    border-bottom: 2px dashed #d8d0c0;
+    padding-bottom: 8px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .note-card ul {
+    list-style: none;
+  }
+
+  .note-card li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 10px;
+    font-size: 1.02rem;
+  }
+
+  .note-card li::before {
+    content: "•";
+    color: var(--accent-teal);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* 互動動畫展示舞台 */
+  .anim-stage {
+    background: #f6f9fb;
+    border: 1.5px solid #cde0e8;
+    border-radius: 12px;
+    padding: 14px;
+    margin: 14px 0;
+    text-align: center;
+  }
+
+  .anim-stage.night {
+    background: #0c1829;
+    border-color: #243b55;
+    color: #ecf0f1;
+  }
+
+  .anim-caption {
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-top: 8px;
+    color: var(--accent-teal);
+  }
+
+  .anim-stage.night .anim-caption {
+    color: #7fdbda;
+  }
+
+  .ctrl-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .ctrl-btn {
+    background: var(--white);
+    border: 1.5px solid var(--accent-teal);
+    color: var(--accent-teal);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .ctrl-btn.active, .ctrl-btn:hover {
+    background: var(--accent-teal);
+    color: var(--white);
+  }
+
+  .night .ctrl-btn {
+    background: #162840;
+    border-color: #4fc3f7;
+    color: #81d4fa;
+  }
+
+  .night .ctrl-btn.active, .night .ctrl-btn:hover {
+    background: #0288d1;
+    color: #ffffff;
+  }
+
+  /* SVG 動畫關鍵影格 */
+  @keyframes sunArc {
+    0% { transform: rotate(-70deg); }
+    50% { transform: rotate(0deg); }
+    100% { transform: rotate(70deg); }
+  }
+
+  @keyframes shadowChange {
+    0% { transform: scaleX(2.4); opacity: 0.7; }
+    50% { transform: scaleX(0.45); opacity: 0.95; }
+    100% { transform: scaleX(-2.4); opacity: 0.7; }
+  }
+
+  @keyframes orbitSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes starRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-360deg); }
+  }
+
+  @keyframes dashFlow {
+    to { stroke-dashoffset: -24; }
+  }
+
+  @keyframes pulseStar {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.25); opacity: 1; }
+  }
+
+  .sun-mover {
+    transform-origin: 180px 155px;
+    animation: sunArc 6s ease-in-out infinite alternate;
+  }
+
+  .shadow-mover {
+    transform-origin: 180px 155px;
+    animation: shadowChange 6s ease-in-out infinite alternate;
+  }
+
+  .orbit-1 { transform-origin: 180px 130px; animation: orbitSpin 4s linear infinite; }
+  .orbit-2 { transform-origin: 180px 130px; animation: orbitSpin 6.5s linear infinite; }
+  .orbit-3 { transform-origin: 180px 130px; animation: orbitSpin 9s linear infinite; }
+  .orbit-4 { transform-origin: 180px 130px; animation: orbitSpin 12s linear infinite; }
+  .orbit-5 { transform-origin: 180px 130px; animation: orbitSpin 18s linear infinite; }
+  .orbit-6 { transform-origin: 180px 130px; animation: orbitSpin 23s linear infinite; }
+  .orbit-7 { transform-origin: 180px 130px; animation: orbitSpin 28s linear infinite; }
+  .orbit-8 { transform-origin: 180px 130px; animation: orbitSpin 34s linear infinite; }
+
+  .star-wheel {
+    transform-origin: 190px 115px;
+    animation: starRotate 22s linear infinite;
+  }
+
+  .star-wheel.paused {
+    animation-play-state: paused;
+  }
+
+  .guide-ray {
+    stroke-dasharray: 6, 6;
+    animation: dashFlow 1s linear infinite;
+  }
+
+  .polaris-glow {
+    transform-origin: 190px 115px;
+    animation: pulseStar 2s ease-in-out infinite;
+  }
+
+  /* 重點便利貼卡片 */
+  .sticky-card {
+    background: var(--card-yellow);
+    border: 2px solid var(--border-yellow);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(180, 150, 50, 0.08);
+  }
+
+  .sticky-card h3 {
+    font-size: 1.2rem;
+    color: #5c4b14;
+    margin-bottom: 12px;
+    border-bottom: 1.5px solid rgba(92, 75, 20, 0.2);
+    padding-bottom: 6px;
+  }
+
+  /* 表格樣式 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 0.98rem;
+  }
+
+  th, td {
+    border: 1px solid #d8d0c0;
+    padding: 10px 12px;
+    text-align: center;
+  }
+
+  th {
+    background: #f3eee1;
+    font-weight: 700;
+  }
+
+  /* 口訣強調框 */
+  .mantra-box {
+    background: #eef8fa;
+    border-left: 5px solid var(--accent-teal);
+    padding: 12px 16px;
+    border-radius: 0 10px 10px 0;
+    margin: 12px 0;
+    font-weight: 700;
+    font-size: 1.06rem;
+    color: #135d66;
+  }
+
+  .trap-alert {
+    background: #fdecea;
+    border: 1px solid #f5c6cb;
+    color: var(--highlight-red);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    font-size: 0.98rem;
+  }
+
+  /* 互動測驗與填空區 */
+  .interactive-zone {
+    margin-top: 28px;
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) {
+    .interactive-zone {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .fill-box {
+    background: var(--white);
+    border: 2.5px solid var(--accent-orange);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 14px rgba(230, 126, 34, 0.08);
+  }
+
+  .quiz-box {
+    background: var(--white);
+    border: 2.5px solid var(--accent-teal);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 14px rgba(27, 138, 153, 0.08);
+  }
+
+  .fill-box h2 {
+    color: var(--accent-orange);
+    margin-bottom: 12px;
+    font-size: 1.35rem;
+  }
+
+  .quiz-box h2 {
+    color: var(--accent-teal);
+    margin-bottom: 14px;
+    font-size: 1.35rem;
+  }
+
+  /* 互動式填空題樣式 */
+  .word-bank {
+    background: #fff8ee;
+    border: 1.5px dashed #f0b27a;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 18px;
+    font-size: 0.92rem;
+  }
+
+  .word-bank span {
+    display: inline-block;
+    background: var(--white);
+    border: 1.5px solid #e67e22;
+    color: #b9580c;
+    padding: 3px 10px;
+    border-radius: 14px;
+    margin: 3px 4px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .word-bank span:hover {
+    background: #e67e22;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .fill-group-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #b9580c;
+    background: #fef5e7;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin: 14px 0 10px;
+    display: inline-block;
+  }
+
+  .fill-list {
+    list-style: none;
+  }
+
+  .fill-list li {
+    margin-bottom: 13px;
+    font-size: 1.02rem;
+    line-height: 1.95;
+    padding-left: 6px;
+  }
+
+  .blank-input {
+    width: 88px;
+    padding: 2px 6px;
+    font-size: 0.98rem;
+    font-family: inherit;
+    font-weight: 700;
+    text-align: center;
+    border: 2px solid #bdc3c7;
+    border-radius: 8px;
+    background: #fdfdfd;
+    color: var(--text-dark);
+    transition: all 0.2s;
+  }
+
+  .blank-input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    background: #fffdf9;
+    box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.18);
+  }
+
+  .blank-input.is-correct {
+    border-color: #28a745;
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .blank-input.is-wrong {
+    border-color: #dc3545;
+    background: #f8d7da;
+    color: #721c24;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .submit-btn {
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+
+  .submit-btn:hover {
+    background: #d35400;
+  }
+
+  .hint-ans-btn {
+    background: #f3e5f5;
+    color: #6a1b9a;
+    border: 1.5px solid #ce93d8;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .reset-btn {
+    background: #ecf0f1;
+    color: #2c3e50;
+    border: 1px solid #bdc3c7;
+    padding: 9px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .score-banner {
+    margin-top: 14px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.02rem;
+    display: none;
+  }
+
+  /* 選擇題按鈕 */
+  .quiz-item {
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .quiz-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .quiz-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .quiz-btn {
+    background: #f4f6f7;
+    border: 1.5px solid #cfd8dc;
+    padding: 6px 13px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.94rem;
+    font-family: inherit;
+    transition: all 0.2s;
+  }
+
+  .quiz-btn:hover {
+    background: #e1f2f5;
+    border-color: var(--accent-teal);
+  }
+
+  .quiz-btn.correct {
+    background: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+    font-weight: 700;
+  }
+
+  .quiz-btn.wrong {
+    background: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+  }
+
+  .feedback {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">五年級自然科學・圖解動畫互動加強版</div>
+    <h1>神秘的天空：太陽、太陽系與星空</h1>
+    <p class="secret">觀察天空的秘訣：<span>由近到遠，看「規律運轉」</span></p>
+  </header>
+
+  <div class="board-grid">
+    <!-- 左欄：核心概念筆記 + 視覺動畫 -->
+    <div>
+      <!-- 單元 1 -->
+      <section class="note-card">
+        <h2>1. 太陽的一天（動畫演示：太陽高度與竿影）</h2>
+        <ul>
+          <li><strong>太陽：</strong>自己發光發熱的<strong>恆星</strong>。</li>
+          <li><strong>太陽中天：</strong>到達當天最高位置（臺灣觀測時位於<strong>偏南方</strong>）。</li>
+          <li><strong>規律：</strong>太陽高度越高，<strong>竿影越短</strong>；高度越低，<strong>竿影越長</strong>。</li>
+        </ul>
+
+        <!-- 動畫 1：太陽移動與竿影長短 -->
+        <div class="anim-stage">
+          <svg viewBox="0 0 360 185" width="100%" style="max-width: 390px;">
+            <path d="M 40 155 A 140 140 0 0 1 320 155" fill="none" stroke="#90caf9" stroke-width="2" stroke-dasharray="5,5"/>
+            <rect x="10" y="155" width="340" height="22" rx="4" fill="#a5d6a7"/>
+            <text x="28" y="170" font-size="11" font-weight="bold" fill="#1b5e20">東 (上午)</text>
+            <text x="162" y="170" font-size="11" font-weight="bold" fill="#1b5e20">中天</text>
+            <text x="285" y="170" font-size="11" font-weight="bold" fill="#1b5e20">西 (下午)</text>
+
+            <line class="shadow-mover" x1="180" y1="155" x2="225" y2="155" stroke="#37474f" stroke-width="5" stroke-linecap="round"/>
+            <line x1="180" y1="115" x2="180" y2="155" stroke="#d84315" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="180" cy="115" r="3" fill="#d84315"/>
+
+            <g class="sun-mover">
+              <circle cx="180" cy="22" r="14" fill="#ffb300" stroke="#ff6f00" stroke-width="2"/>
+              <line x1="180" y1="42" x2="180" y2="105" stroke="#ffd54f" stroke-width="1.5" stroke-dasharray="3,3"/>
+            </g>
+          </svg>
+          <div class="anim-caption">☀️ 觀察看看：太陽升到最高（中天）時，地上黑色竿影最短！</div>
+        </div>
+      </section>
+
+      <!-- 單元 2 -->
+      <section class="note-card">
+        <h2>2. 四季成因：地軸傾斜 ＋ 公轉</h2>
+        <ul>
+          <li><strong>關鍵：</strong>地軸傾斜約 <strong>23.4°</strong>，且保持平行繞太陽公轉。</li>
+          <li><strong>夏季（臺灣）：</strong>北半球傾向太陽，陽光直射附近，<strong>白晝長、太陽高</strong>。</li>
+          <li><strong>冬季（臺灣）：</strong>北半球背向太陽，陽光斜射，<strong>白晝短、太陽低</strong>。</li>
+        </ul>
+
+        <!-- 動畫/切換圖 2：四季地軸傾斜互動圖 -->
+        <div class="anim-stage">
+          <svg id="seasonSvg" viewBox="0 0 360 155" width="100%" style="max-width: 390px;">
+            <circle cx="65" cy="78" r="28" fill="#ff9800"/>
+            <circle cx="65" cy="78" r="34" fill="none" stroke="#ffcc80" stroke-width="2" stroke-dasharray="4,4"/>
+            <text x="51" y="82" font-size="13" font-weight="bold" fill="#fff">太陽</text>
+
+            <g stroke="#ffa726" stroke-width="2">
+              <line x1="108" y1="52" x2="225" y2="52"/>
+              <polygon points="225,52 217,48 217,56" fill="#ffa726"/>
+              <line x1="108" y1="78" x2="220" y2="78"/>
+              <polygon points="220,78 212,74 212,82" fill="#ffa726"/>
+              <line x1="108" y1="104" x2="225" y2="104"/>
+              <polygon points="225,104 217,100 217,108" fill="#ffa726"/>
+            </g>
+
+            <g id="earthGroup" transform="translate(265, 78) rotate(-23.4)">
+              <circle cx="0" cy="0" r="32" fill="#29b6f6" stroke="#0288d1" stroke-width="2"/>
+              <path d="M -15 -18 Q -2 -22 8 -10 Q 2 -2 -12 -5 Z" fill="#66bb6a"/>
+              <path d="M 5 5 Q 18 2 16 18 Q 2 20 5 5 Z" fill="#66bb6a"/>
+              <line x1="-32" y1="0" x2="32" y2="0" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,2"/>
+              <circle cx="-12" cy="-12" r="4" fill="#ff1744" stroke="#fff" stroke-width="1.5"/>
+              <line x1="0" y1="-46" x2="0" y2="46" stroke="#d32f2f" stroke-width="2.5"/>
+              <text x="-12" y="-50" font-size="10" font-weight="bold" fill="#d32f2f">北極</text>
+            </g>
+            <text id="seasonLabel" x="155" y="142" font-size="12" font-weight="bold" fill="#1b8a99">目前顯示：臺灣夏季（北半球傾向太陽・陽光較直射）</text>
+          </svg>
+          <div class="ctrl-bar">
+            <button class="ctrl-btn active" id="btnSummer" onclick="setSeason('summer')">☀️ 切換看「臺灣夏季」</button>
+            <button class="ctrl-btn" id="btnWinter" onclick="setSeason('winter')">❄️ 切換看「臺灣冬季」</button>
+          </div>
+        </div>
+
+        <div class="trap-alert">
+          ⚠️ 常考陷阱！中天不一定剛好是時鐘 12:00；臺北中天時太陽偏南，不會到正頭頂。
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>季節</th>
+              <th>升落方位</th>
+              <th>中天影子</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>夏季</strong></td>
+              <td>偏東北升、西北落</td>
+              <td><strong>最短</strong></td>
+            </tr>
+            <tr>
+              <td><strong>冬季</strong></td>
+              <td>偏東南升、西南落</td>
+              <td><strong>最長</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 單元 3 -->
+      <section class="note-card">
+        <h2>3. 太陽系家族成員（八大行星公轉動畫）</h2>
+        <ul>
+          <li><strong>恆星（中心）：</strong>太陽（唯一自體發光發熱）。</li>
+          <li><strong>八大行星（由近到遠）：</strong>水星、金星、地球、火星、木星、土星、天王星、海王星。</li>
+          <li><strong>小行星帶：</strong>主要聚集在<strong>火星與木星</strong>之間。</li>
+          <li><strong>其他成員：</strong>衛星（如月球）、矮行星（如冥王星）、彗星（靠近太陽產生彗尾）。</li>
+        </ul>
+
+        <!-- 動畫 3：太陽系八大行星與小行星帶動態圖 -->
+        <div class="anim-stage night">
+          <svg viewBox="0 0 360 260" width="100%" style="max-width: 390px;">
+            <circle cx="180" cy="130" r="24" fill="none" stroke="#2c3e50" stroke-width="1"/>
+            <circle cx="180" cy="130" r="34" fill="none" stroke="#2c3e50" stroke-width="1"/>
+            <circle cx="180" cy="130" r="45" fill="none" stroke="#2c3e50" stroke-width="1"/>
+            <circle cx="180" cy="130" r="56" fill="none" stroke="#2c3e50" stroke-width="1"/>
+            <circle cx="180" cy="130" r="67" fill="none" stroke="#95a5a6" stroke-width="3" stroke-dasharray="2,5"/>
+            <circle cx="180" cy="130" r="80" fill="none" stroke="#2c3e50" stroke-width="1"/>
+            <circle cx="180" cy="130" r="95" fill="none" stroke="#2c3e50" stroke-width="1"/>
+            <circle cx="180" cy="130" r="110" fill="none" stroke="#2c3e50" stroke-width="1"/>
+            <circle cx="180" cy="130" r="123" fill="none" stroke="#2c3e50" stroke-width="1"/>
+
+            <circle cx="180" cy="130" r="13" fill="#ff9800"/>
+            <text x="171" y="134" font-size="9" font-weight="bold" fill="#fff">太陽</text>
+
+            <g class="orbit-1"><circle cx="204" cy="130" r="3" fill="#b0bec5"/><text x="208" y="133" font-size="8" fill="#cfd8dc">水</text></g>
+            <g class="orbit-2"><circle cx="180" cy="96" r="4" fill="#ffe082"/><text x="185" y="99" font-size="8" fill="#ffe082">金</text></g>
+            <g class="orbit-3"><circle cx="135" cy="130" r="4.5" fill="#4fc3f7"/><text x="122" y="133" font-size="8" fill="#4fc3f7">地</text></g>
+            <g class="orbit-4"><circle cx="180" cy="186" r="4" fill="#ff7043"/><text x="185" y="189" font-size="8" fill="#ff8a65">火</text></g>
+            <g class="orbit-5"><circle cx="260" cy="130" r="8" fill="#d7ccc8"/><text x="270" y="133" font-size="9" font-weight="bold" fill="#efebe9">木</text></g>
+            <g class="orbit-6">
+              <ellipse cx="180" cy="35" rx="11" ry="3.5" fill="none" stroke="#ffe082" stroke-width="1.5"/>
+              <circle cx="180" cy="35" r="6.5" fill="#ffd54f"/>
+              <text x="193" y="38" font-size="9" font-weight="bold" fill="#ffe082">土</text>
+            </g>
+            <g class="orbit-7"><circle cx="70" cy="130" r="5.5" fill="#80deea"/><text x="55" y="133" font-size="8" fill="#80deea">天</text></g>
+            <g class="orbit-8"><circle cx="180" cy="253" r="5.5" fill="#5c6bc0"/><text x="187" y="255" font-size="8" fill="#9fa8da">海</text></g>
+          </svg>
+          <div class="anim-caption">🪐 灰色虛線圈就是「小行星帶」，位在火星與木星之間喔！</div>
+        </div>
+      </section>
+
+      <!-- 單元 4 & 5 -->
+      <section class="note-card">
+        <h2>4. 星座與「北斗七星找北極星」動畫演示</h2>
+        <ul>
+          <li><strong>四季代表星座：</strong><strong>獅子座（春）、天蠍座（夏）、飛馬座（秋）、獵戶座（冬）</strong>。</li>
+          <li><strong>北斗七星找北極星（春夏季）：</strong>找到勺口兩顆星（天璇 → 天樞），往勺口方向延伸約 <strong>5 倍距離</strong>，就能找到北極星！</li>
+          <li><strong>仙后座找北極星（秋冬季）：</strong>將 W 字形外側兩條線段向內延伸交會，再與中間星連線延伸約 <strong>5 倍距離</strong>。</li>
+          <li><strong>星空運動口訣：</strong><strong>「一夜看自轉，四季看公轉」</strong>。</li>
+        </ul>
+
+        <!-- 動畫 4：升級版「北斗七星與仙后座找北極星」連線＋旋轉動畫 -->
+        <div class="anim-stage night">
+          <svg id="polarisSvg" viewBox="0 0 380 245" width="100%" style="max-width: 420px;">
+            <!-- 背景同心星軌 -->
+            <circle cx="190" cy="115" r="50" fill="none" stroke="#1b3352" stroke-width="1" stroke-dasharray="3,4"/>
+            <circle cx="190" cy="115" r="95" fill="none" stroke="#1b3352" stroke-width="1" stroke-dasharray="3,4"/>
+
+            <!-- 旋轉的星空圓盤 (中心為 190, 115) -->
+            <g id="starWheelGroup" class="star-wheel">
+              <!-- ====== 1. 北斗七星 (位於上方/左上方) ====== -->
+              <!-- 勺柄到勺口：搖光(102,42) - 開陽(118,46) - 玉衡(132,54) - 天權(144,64) - 天璣(144,82) - 天璇(164,84) - 天樞(164,66) -->
+              <polyline points="102,42 118,46 132,54 144,64 144,82 164,84 164,66" fill="none" stroke="#4fc3f7" stroke-width="2"/>
+              <line x1="144" y1="64" x2="164" y2="66" stroke="#4fc3f7" stroke-width="1.2" stroke-dasharray="2,2"/>
+
+              <!-- 星星點 -->
+              <circle cx="102" cy="42" r="2.8" fill="#ffffff"/>
+              <circle cx="118" cy="46" r="2.8" fill="#ffffff"/>
+              <circle cx="132" cy="54" r="2.8" fill="#ffffff"/>
+              <circle cx="144" cy="64" r="2.5" fill="#ffffff"/>
+              <circle cx="144" cy="82" r="2.8" fill="#ffffff"/>
+              <!-- 勺口兩星特別標亮 (164,84) -> (164,66)，方向向量 (0, -18)... 調整座標讓 (164,84)->(170,91) 指向 (190,115) -->
+              <!-- 重新精準計算共線座標：
+                   北極星 P = (190, 115)
+                   設方向向量 d = (-5, -8)
+                   1倍距離點(天樞) = P + 5*d = (190 - 25, 115 - 40) = (165, 75)
+                   2倍距離點(天璇) = P + 6*d = (190 - 30, 115 - 48) = (160, 67)
+                   勺底另兩星：天璣(142, 76)、天權(147, 84)
+                   勺柄三星：玉衡(134, 92)、開陽(120, 96)、搖光(106, 106)
+              -->
+              <rect x="90" y="30" width="100" height="70" fill="#0c1829"/>
+              <!-- 重繪精準共線的北斗七星 -->
+              <polyline points="106,106 120,96 134,92 147,84 142,76 160,67 165,75 147,84" fill="none" stroke="#4fc3f7" stroke-width="2"/>
+              <circle cx="106" cy="106" r="2.6" fill="#fff"/>
+              <circle cx="120" cy="96" r="2.6" fill="#fff"/>
+              <circle cx="134" cy="92" r="2.6" fill="#fff"/>
+              <circle cx="147" cy="84" r="2.4" fill="#fff"/>
+              <circle cx="142" cy="76" r="2.6" fill="#fff"/>
+              <!-- 勺口兩顆指極星 (金色光圈) -->
+              <circle cx="160" cy="67" r="3.5" fill="#ffd54f" stroke="#ff6f00" stroke-width="1"/>
+              <circle cx="165" cy="75" r="3.5" fill="#ffd54f" stroke="#ff6f00" stroke-width="1"/>
+              <text x="102" y="83" font-size="10" font-weight="bold" fill="#81d4fa">北斗七星</text>
+
+              <!-- 5倍延伸動態光線 (從 160,67 經過 165,75 射向 190,115) -->
+              <g id="dipperGuideGroup">
+                <line class="guide-ray" x1="160" y1="67" x2="190" y2="115" stroke="#ffd54f" stroke-width="2"/>
+                <text x="148" y="103" font-size="9" font-weight="bold" fill="#ffd54f">延伸 5 倍</text>
+              </g>
+
+              <!-- ====== 2. 仙后座 (位於對側，W形狀) ====== -->
+              <!-- 設中心星 C = P + 5*(5, 8) = (215, 155)，6倍交點 I = (220, 163) -->
+              <polyline points="196,166 208,153 215,155 224,145 234,158" fill="none" stroke="#ffab91" stroke-width="2"/>
+              <circle cx="196" cy="166" r="2.6" fill="#fff"/>
+              <circle cx="208" cy="153" r="2.6" fill="#fff"/>
+              <circle cx="215" cy="155" r="3" fill="#ffcc80"/>
+              <circle cx="224" cy="145" r="2.6" fill="#fff"/>
+              <circle cx="234" cy="158" r="2.6" fill="#fff"/>
+              <text x="200" y="182" font-size="10" font-weight="bold" fill="#ffab91">仙后座 (W形)</text>
+
+              <!-- 仙后座延伸輔助線 -->
+              <g id="cassiopeiaGuideGroup">
+                <!-- 外側兩邊延伸交於 (220, 163) -->
+                <line x1="196" y1="166" x2="220" y2="163" stroke="#ffab91" stroke-width="1" stroke-dasharray="2,2"/>
+                <line x1="234" y1="158" x2="220" y2="163" stroke="#ffab91" stroke-width="1" stroke-dasharray="2,2"/>
+                <!-- 從交點經中間星射向北極星 -->
+                <line class="guide-ray" x1="220" y1="163" x2="190" y2="115" stroke="#ffab91" stroke-width="2"/>
+                <text x="213" y="136" font-size="9" font-weight="bold" fill="#ffab91">5 倍</text>
+              </g>
+
+              <!-- 點綴小星星 -->
+              <circle cx="95" cy="155" r="1.8" fill="#90caf9"/>
+              <circle cx="275" cy="70" r="2" fill="#90caf9"/>
+              <circle cx="265" cy="165" r="1.8" fill="#90caf9"/>
+              <circle cx="120" cy="40" r="1.8" fill="#90caf9"/>
+            </g>
+
+            <!-- 中心不動的北極星 -->
+            <g class="polaris-glow">
+              <circle cx="190" cy="115" r="10" fill="rgba(255, 241, 118, 0.25)"/>
+              <circle cx="190" cy="115" r="5" fill="#fff176" stroke="#fbc02d" stroke-width="1.5"/>
+            </g>
+            <rect x="200" y="105" width="122" height="20" rx="5" fill="rgba(12, 24, 41, 0.85)" stroke="#fff176" stroke-width="1"/>
+            <text x="206" y="119" font-size="10" font-weight="bold" fill="#fff176">★ 北極星 (正北方)</text>
+
+            <!-- 地面剪影 -->
+            <path d="M 0 222 Q 95 208 190 220 Q 285 232 380 218 L 380 245 L 0 245 Z" fill="#060c14"/>
+            <text x="26" y="237" font-size="11" font-weight="bold" fill="#90a4ae">西</text>
+            <text x="184" y="237" font-size="11" font-weight="bold" fill="#fff176">北</text>
+            <text x="342" y="237" font-size="11" font-weight="bold" fill="#90a4ae">東</text>
+          </svg>
+
+          <div class="ctrl-bar">
+            <button class="ctrl-btn active" id="btnToggleSpin" onclick="toggleStarSpin()">⏸️ 暫停旋轉（仔細看連線）</button>
+            <button class="ctrl-btn active" id="btnToggleGuide" onclick="toggleGuideLines()">📏 顯示/隱藏 5倍延伸線</button>
+          </div>
+          <div class="anim-caption">🌟 不管星空怎麼旋轉，北斗七星「勺口兩星」延伸 5 倍永遠指向北極星！</div>
+        </div>
+
+        <div class="mantra-box">
+          口訣總整理：「春獅、夏蠍、秋飛馬、冬獵戶」｜「一夜看自轉，四季看公轉」
+        </div>
+      </section>
+    </div>
+
+    <!-- 右欄：便利貼重點整理 -->
+    <div>
+      <aside class="sticky-card">
+        <h3>🗺️ 今天導覽地圖</h3>
+        <ul style="list-style: none; padding-left: 4px;">
+          <li>1. 太陽位置與四季變化 ✅</li>
+          <li>2. 太陽系家族成員 ✅</li>
+          <li>3. 四季星空與北極星 ✅</li>
+        </ul>
+      </aside>
+
+      <aside class="sticky-card">
+        <h3>🪐 八大行星記憶口訣</h3>
+        <p style="font-size: 1.15rem; font-weight: 800; color: #1b8a99; margin-bottom: 8px;">
+          「水金地火，木土天海」
+        </p>
+        <p><strong>前四顆：</strong>岩石行星（有固體表面）</p>
+        <p><strong>後四顆：</strong>巨行星（體積大）</p>
+      </aside>
+
+      <aside class="sticky-card">
+        <h3>🧭 尋找北極星秘訣</h3>
+        <ul style="padding-left: 18px;">
+          <li><strong>春夏看「北斗七星」：</strong>勺口兩顆星（天璇→天樞）往勺口方向延伸 <strong>5 倍</strong>。</li>
+          <li><strong>秋冬看「仙后座」：</strong>W 字形外側兩邊延伸交會，與中間星連線延伸 <strong>5 倍</strong>。</li>
+          <li><strong>方位意義：</strong>面對北極星，正面就是<strong>正北方</strong>！</li>
+        </ul>
+      </aside>
+
+      <aside class="sticky-card" style="background: #fffdf5;">
+        <h3>⚡ 全單元快速背誦包</h3>
+        <ol style="padding-left: 20px;">
+          <li><strong>太陽高、竿影短</strong>；地軸斜＋公轉造四季</li>
+          <li><strong>行星：</strong>水金地火，木土天海</li>
+          <li><strong>星座：</strong>春獅、夏蠍、秋飛馬、冬獵戶</li>
+          <li><strong>運轉：</strong>一夜看自轉，四季看公轉</li>
+        </ol>
+      </aside>
+
+      <aside class="sticky-card" style="background: #f4f1e1;">
+        <h3>🚀 下次上課方向</h3>
+        <ul style="padding-left: 18px;">
+          <li>北斗七星與仙后座尋找北極星的尺規連線題</li>
+          <li>太陽觀測紀錄表與竿影方位常見考題解析</li>
+          <li>月相變化與日食月食觀念銜接</li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <!-- 互動練習區：左邊 12 格豐富填空挑戰、右邊觀念選擇題 -->
+  <div class="interactive-zone">
+    <!-- 升級版：互動式填空題 (共 8 大題、13 個空格，分主題呈現) -->
+    <section class="fill-box">
+      <h2>✏️ 互動式填空挑戰（共 13 格・即時自動批改）</h2>
+      <div class="word-bank">
+        <strong>💡 提示字庫（點一下就能自動填入目前空格，也可自己打字）：</strong><br>
+        <span onclick="fillHint('恆星')">恆星</span>
+        <span onclick="fillHint('偏南')">偏南</span>
+        <span onclick="fillHint('短')">短</span>
+        <span onclick="fillHint('23.4')">23.4</span>
+        <span onclick="fillHint('木星')">木星</span>
+        <span onclick="fillHint('彗尾')">彗尾</span>
+        <span onclick="fillHint('天蠍')">天蠍</span>
+        <span onclick="fillHint('獵戶')">獵戶</span>
+        <span onclick="fillHint('5')">5</span>
+        <span onclick="fillHint('北')">北</span>
+        <span onclick="fillHint('自轉')">自轉</span>
+        <span onclick="fillHint('公轉')">公轉</span>
+      </div>
+
+      <div class="fill-group-title">☀️ 第一關：太陽與四季變化</div>
+      <ol class="fill-list" style="padding-left: 20px;">
+        <li>太陽是自己發光發熱的 <input type="text" class="blank-input" data-ans="恆星" placeholder="？"> ；臺北中午太陽「中天」時位於 <input type="text" class="blank-input" data-ans="偏南|偏南方" placeholder="方位"> 方。</li>
+        <li>太陽高度越高，地上的竿影就會越 <input type="text" class="blank-input" data-ans="短" placeholder="？"> 。</li>
+        <li>地球的地軸傾斜約 <input type="text" class="blank-input" data-ans="23.4" placeholder="數字"> 度，加上繞太陽公轉形成四季。</li>
+      </ol>
+
+      <div class="fill-group-title">🪐 第二關：太陽系家族</div>
+      <ol class="fill-list" start="4" style="padding-left: 20px;">
+        <li>小行星帶主要聚集在火星與 <input type="text" class="blank-input" data-ans="木星" placeholder="行星名"> 之間。</li>
+        <li>彗星由冰雪與塵埃組成，靠近太陽時會產生長長的 <input type="text" class="blank-input" data-ans="彗尾" placeholder="？"> 。</li>
+      </ol>
+
+      <div class="fill-group-title">🌟 第三關：四季星空與尋找北極星</div>
+      <ol class="fill-list" start="6" style="padding-left: 20px;">
+        <li>四季代表星座口訣：「春獅、夏 <input type="text" class="blank-input" data-ans="天蠍|蠍" placeholder="？"> 、秋飛馬、冬 <input type="text" class="blank-input" data-ans="獵戶" placeholder="？"> 」。</li>
+        <li>利用北斗七星勺口兩顆星往外延伸約 <input type="text" class="blank-input" data-ans="5|五" placeholder="數字"> 倍距離，就能找到代表正 <input type="text" class="blank-input" data-ans="北|北方" placeholder="方位"> 方的北極星。</li>
+        <li>星空運動核心口訣：「一夜看 <input type="text" class="blank-input" data-ans="自轉" placeholder="？"> ，四季看 <input type="text" class="blank-input" data-ans="公轉" placeholder="？"> 」。</li>
+      </ol>
+
+      <div class="action-row">
+        <button class="submit-btn" onclick="gradeFillBlanks()">✅ 送出批改看分數</button>
+        <button class="hint-ans-btn" onclick="showAllAnswers()">👀 偷看正確解答</button>
+        <button class="reset-btn" onclick="resetFillBlanks()">🔄 全部清空重寫</button>
+      </div>
+      <div id="fillScoreBanner" class="score-banner"></div>
+    </section>
+
+    <!-- 隨堂選擇題 -->
+    <section class="quiz-box">
+      <h2>🎯 隨堂觀念快問快答</h2>
+      <div class="quiz-item">
+        <p><strong>Q1. 晚上利用「北斗七星」找北極星時，要從哪裡延伸 5 倍？</strong></p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAns(this, true, '答對了！從勺口兩顆星（天璇往天樞方向）延伸約 5 倍距離就能找到北極星。')">勺口兩顆星</button>
+          <button class="quiz-btn" onclick="checkAns(this, false, '不對喔！勺柄末端是指向大角星，找北極星要看勺口兩顆星。')">勺柄最末端</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="quiz-item">
+        <p><strong>Q2. 臺北中午太陽「中天」時，太陽會出現在哪個方向？</strong></p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAns(this, false, '陷阱題喔！臺北在北回歸線以北，太陽不會到正頭頂。')">正頭頂（天頂）</button>
+          <button class="quiz-btn" onclick="checkAns(this, true, '答對了！臺北中天時太陽位於偏南方，而且時間不一定剛好是 12:00。')">偏南方</button>
+          <button class="quiz-btn" onclick="checkAns(this, false, '不對喔，太陽不會在偏北方中天。')">偏北方</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="quiz-item">
+        <p><strong>Q3. 一個晚上看到星星「東升西落」，主要原因是什麼？</strong></p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAns(this, true, '完全正確！地球由西向東自轉造成天體東升西落的視覺假象。')">地球自轉</button>
+          <button class="quiz-btn" onclick="checkAns(this, false, '公轉影響的是四季看到不同的星座喔！')">地球公轉</button>
+          <button class="quiz-btn" onclick="checkAns(this, false, '地軸傾斜主要影響四季日照長短。')">地軸傾斜</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="quiz-item">
+        <p><strong>Q4. 臺灣哪一個季節的「中天竿影」會最長？</strong></p>
+        <div class="quiz-options">
+          <button class="quiz-btn" onclick="checkAns(this, false, '夏季太陽高度最高，竿影反而是最短的喔！')">夏季</button>
+          <button class="quiz-btn" onclick="checkAns(this, true, '答對了！冬季太陽斜射、高度低，所以影子最長。')">冬季</button>
+        </div>
+        <div class="feedback"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+  // 1. 切換夏冬地軸傾斜圖
+  function setSeason(season) {
+    const earth = document.getElementById('earthGroup');
+    const label = document.getElementById('seasonLabel');
+    const btnSummer = document.getElementById('btnSummer');
+    const btnWinter = document.getElementById('btnWinter');
+
+    if (season === 'summer') {
+      earth.setAttribute('transform', 'translate(265, 78) rotate(-23.4)');
+      label.textContent = '目前顯示：臺灣夏季（北半球傾向太陽・陽光較直射）';
+      btnSummer.classList.add('active');
+      btnWinter.classList.remove('active');
+    } else {
+      earth.setAttribute('transform', 'translate(265, 78) rotate(23.4)');
+      label.textContent = '目前顯示：臺灣冬季（北半球背向太陽・陽光斜射）';
+      btnWinter.classList.add('active');
+      btnSummer.classList.remove('active');
+    }
+  }
+
+  // 2. 控制「北斗七星找北極星」動畫暫停與輔助線顯示
+  let isSpinning = true;
+  function toggleStarSpin() {
+    const wheel = document.getElementById('starWheelGroup');
+    const btn = document.getElementById('btnToggleSpin');
+    isSpinning = !isSpinning;
+    if (isSpinning) {
+      wheel.classList.remove('paused');
+      btn.textContent = '⏸️ 暫停旋轉（仔細看連線）';
+      btn.classList.add('active');
+    } else {
+      wheel.classList.add('paused');
+      btn.textContent = '▶️ 繼續星空旋轉';
+      btn.classList.remove('active');
+    }
+  }
+
+  let showGuides = true;
+  function toggleGuideLines() {
+    const dipperGuide = document.getElementById('dipperGuideGroup');
+    const cassGuide = document.getElementById('cassiopeiaGuideGroup');
+    const btn = document.getElementById('btnToggleGuide');
+    showGuides = !showGuides;
+    dipperGuide.style.display = showGuides ? 'inline' : 'none';
+    cassGuide.style.display = showGuides ? 'inline' : 'none';
+    if (showGuides) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  }
+
+  // 3. 追蹤目前聚焦的填空輸入框，方便點擊字庫填入
+  let activeInput = null;
+  document.querySelectorAll('.blank-input').forEach(inp => {
+    inp.addEventListener('focus', () => {
+      activeInput = inp;
+    });
+  });
+
+  function fillHint(word) {
+    if (activeInput) {
+      activeInput.value = word;
+      activeInput.classList.remove('is-correct', 'is-wrong');
+      const inputs = Array.from(document.querySelectorAll('.blank-input'));
+      const idx = inputs.indexOf(activeInput);
+      if (idx >= 0 && idx + 1 < inputs.length) {
+        inputs[idx + 1].focus();
+      }
+    } else {
+      const firstEmpty = Array.from(document.querySelectorAll('.blank-input')).find(i => !i.value.trim());
+      if (firstEmpty) {
+        firstEmpty.value = word;
+        firstEmpty.focus();
+      }
+    }
+  }
+
+  // 4. 批改填空題
+  function gradeFillBlanks() {
+    const inputs = document.querySelectorAll('.blank-input');
+    let correctCount = 0;
+
+    inputs.forEach(inp => {
+      const userVal = inp.value.trim().replace('°', '').replace('度', '').replace('倍', '');
+      const validAnswers = inp.dataset.ans.split('|');
+      inp.classList.remove('is-correct', 'is-wrong');
+
+      if (validAnswers.includes(userVal)) {
+        inp.classList.add('is-correct');
+        correctCount++;
+      } else {
+        inp.classList.add('is-wrong');
+      }
+    });
+
+    const banner = document.getElementById('fillScoreBanner');
+    banner.style.display = 'block';
+    if (correctCount === inputs.length) {
+      banner.style.background = '#d4edda';
+      banner.style.color = '#155724';
+      banner.textContent = `🎉 滿分 100 分！全部 13 格都答對了，你是小小天文學家！`;
+    } else {
+      banner.style.background = '#fff3cd';
+      banner.style.color = '#856404';
+      banner.textContent = `💪 答對 ${correctCount} / ${inputs.length} 格！紅色框框可以修改後再按「送出批改」，或點「偷看正確解答」核對喔！`;
+    }
+  }
+
+  // 5. 顯示正確解答
+  function showAllAnswers() {
+    document.querySelectorAll('.blank-input').forEach(inp => {
+      const mainAns = inp.dataset.ans.split('|')[0];
+      inp.value = mainAns;
+      inp.classList.remove('is-wrong');
+      inp.classList.add('is-correct');
+    });
+    const banner = document.getElementById('fillScoreBanner');
+    banner.style.display = 'block';
+    banner.style.background = '#e8daef';
+    banner.style.color = '#4a235a';
+    banner.textContent = '👀 已填入所有標準答案！看懂後可以按「全部清空重寫」再挑戰一次！';
+  }
+
+  // 6. 重設填空題
+  function resetFillBlanks() {
+    document.querySelectorAll('.blank-input').forEach(inp => {
+      inp.value = '';
+      inp.classList.remove('is-correct', 'is-wrong');
+    });
+    const banner = document.getElementById('fillScoreBanner');
+    banner.style.display = 'none';
+  }
+
+  // 7. 選擇題即時回饋
+  function checkAns(btn, isCorrect, msg) {
+    const parent = btn.parentElement;
+    const buttons = parent.querySelectorAll('.quiz-btn');
+    buttons.forEach(b => {
+      b.classList.remove('correct', 'wrong');
+    });
+    btn.classList.add(isCorrect ? 'correct' : 'wrong');
+    const feedback = parent.nextElementSibling;
+    feedback.textContent = msg;
+    feedback.style.color = isCorrect ? '#155724' : '#721c24';
+  }
+</script>
+
+</body>
+</html>
