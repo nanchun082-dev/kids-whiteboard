@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>國小互動白板學習小幫手 v3.1</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", sans-serif;
+      background: #f4f6f8;
+      color: #222;
+    }
+    header {
+      background: #ffffff;
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+    }
+    .group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      padding-right: 8px;
+      border-right: 1px solid #e5e7eb;
+    }
+    .group:last-child {
+      border-right: none;
+    }
+    .main {
+      display: flex;
+      height: calc(100vh - 116px);
+      padding: 12px 16px;
+      gap: 14px;
+      box-sizing: border-box;
+    }
+    .board-area {
+      flex: 3;
+      background: #faf8f5;
+      border: 2px solid #e2dfd7;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+    }
+    .board-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    canvas {
+      flex: 1;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px dashed #ccc;
+      cursor: crosshair;
+      touch-action: none;
+    }
+    .tutor-area {
+      flex: 1;
+      min-width: 290px;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 14px;
+      border: 1px solid #e2dfd7;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+    }
+    .subtitle-box {
+      background: #eef6ff;
+      padding: 12px;
+      border-radius: 8px;
+      min-height: 80px;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .speech-controls, .record-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .record-box {
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ai-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .ai-box input {
+      padding: 7px 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    footer {
+      background: #ffffff;
+      padding: 10px 18px;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    button {
+      padding: 7px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #f3f4f6;
+    }
+    button.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+    .btn-green {
+      background: #059669;
+      color: #fff;
+      border-color: #059669;
+    }
+    .btn-purple {
+      background: #7c3aed;
+      color: #fff;
+      border-color: #7c3aed;
+    }
+    .btn-amber {
+      background: #d97706;
+      color: #fff;
+      border-color: #d97706;
+    }
+    .status-note {
+      font-size: 12px;
+      color: #4b5563;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <strong>學習白板 v3.1</strong>
+    <div class="group">
+      <button id="btn-science" class="active" onclick="setSubject('science')">自然科</button>
+      <button id="btn-english" onclick="setSubject('english')">英文科</button>
+    </div>
+    <div class="group">
+      <button id="btn-mode-learn" class="active" onclick="setMode('learn')">概念講解</button>
+      <button id="btn-mode-quiz" onclick="setMode('quiz')">隨堂小測驗</button>
+    </div>
+    <div class="group">
+      <button onclick="drawStepVisual()">🎨 畫出提示</button>
+      <button onclick="clearBoard()">清除白板</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="board-area">
+      <div class="board-toolbar">
+        <span style="font-size: 14px; font-weight: bold;">畫筆工具：</span>
+        <button id="tool-blue" class="active" onclick="setTool('blue')">🔵 藍筆</button>
+        <button id="tool-red" onclick="setTool('red')">🔴 紅筆</button>
+        <button id="tool-eraser" onclick="setTool('eraser')">🧹 橡皮擦</button>
+        <span id="board-hint" style="margin-left: 8px; font-size: 14px; color: #1e3a8a; font-weight: bold;"></span>
+      </div>
+      <canvas id="whiteboard"></canvas>
+    </div>
+
+    <div class="tutor-area">
+      <h3>AI 語音導師</h3>
+      <div id="subtitle" class="subtitle-box"></div>
+
+      <div class="speech-controls">
+        <button class="btn-green" onclick="speakCurrent()">🔊 念出這一步</button>
+        <button id="rate-slow" onclick="setSpeechRate(0.65)">🐢 慢速</button>
+        <button id="rate-normal" class="active" onclick="setSpeechRate(0.95)">🚶 正常</button>
+      </div>
+
+      <div class="record-box">
+        <strong style="font-size: 14px;">🎙️ 英文跟讀練習區</strong>
+        <div class="record-controls">
+          <button id="btn-record" class="btn-amber" onclick="toggleRecording()">開始跟讀錄音</button>
+          <button id="btn-play-record" onclick="playRecording()" disabled>▶ 聽聽自己念的</button>
+        </div>
+        <div id="record-status" class="status-note">聽完示範發音後，按「開始跟讀錄音」試著念念看！</div>
+      </div>
+
+      <div class="ai-box">
+        <strong style="font-size: 14px;">✨ 串接 Gemini 即時出題／講解</strong>
+        <input id="api-key-input" type="password" placeholder="貼上 Gemini API Key（僅存於本機瀏覽器）" onchange="saveApiKey()" />
+        <input id="topic-input" type="text" placeholder="輸入想學的主題，例如：摩擦力、現在完成式" />
+        <button class="btn-purple" onclick="generateWithGemini()">🚀 請 AI 生成本課內容</button>
+        <div id="ai-status" class="status-note">尚未輸入 API Key 時，會自動使用內建示範課程。</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div id="step-indicator">第 1 關 / 共 2 關</div>
+    <div style="display: flex; gap: 10px;">
+      <button onclick="prevItem()">← 上一關</button>
+      <button onclick="nextItem()">下一關 →</button>
+    </div>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById("whiteboard");
+    const ctx = canvas.getContext("2d");
+    let drawing = false;
+    let currentSubject = "science";
+    let currentMode = "learn";
+    let currentIndex = 0;
+    let currentTool = "blue";
+    let speechRate = 0.95;
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordedAudioUrl = null;
+    let isRecording = false;
+
+    const bank = {
+      science: {
+        learn: [
+          {
+            hint: "在白板上標出左邊「重物」與右邊往下壓的「施力箭頭」",
+            speech: "支點在正中間時，兩邊距離相等。試著在白板上標出左邊的重物和右邊往下壓的施力箭頭！",
+            visualTitle: "槓桿平衡示意：支點在中央",
+            visualLines: ["支點位於橫桿正中央", "試著用藍筆畫出施力方向，用紅筆圈出重物位置"]
+          },
+          {
+            hint: "觀察支點靠近重物時，施力臂變長會比較省力",
+            speech: "當支點靠近重物、施力點離支點比較遠時，通常會比較省力喔！",
+            visualTitle: "支點靠近重物 → 施力臂變長",
+            visualLines: ["施力臂越長，施力通常越小", "用紅筆畫出從支點到施力點的距離"]
+          }
+        ],
+        quiz: [
+          {
+            hint: "隨堂測驗 1：請在白板上圈出「最省力」的施力位置",
+            speech: "第一題：如果要把左邊的石頭翹起來，施力在 A 點還是 B 點比較省力？用紅筆把它圈起來，並說出理由！",
+            visualTitle: "測驗題：A 點（靠近支點） vs B 點（遠離支點）",
+            visualLines: ["[重物] ----▲(支點)---- (A) -------- (B)", "請在白板上圈出比較省力的點"]
+          },
+          {
+            hint: "隨堂測驗 2：請畫出物體在斜面上滑下時，「摩擦力」的方向",
+            speech: "第二題：箱子沿著斜坡往下滑，摩擦力會往哪個方向？請畫出箭頭表示摩擦力的方向！",
+            visualTitle: "測驗題：摩擦力方向判斷",
+            visualLines: ["箱子往斜坡下方滑動", "摩擦力方向與運動方向相反，試著畫出箭頭"]
+          }
+        ]
+      },
+      english: {
+        learn: [
+          {
+            hint: "練習寫出過去式句子：主詞 + 動詞過去式 + 時間副詞",
+            speech: "I played soccer yesterday. Try reading it aloud slowly!",
+            visualTitle: "Past Tense Structure",
+            visualLines: ["Subject + Verb (-ed / irregular) + Past Time", "Example: I played soccer yesterday."]
+          },
+          {
+            hint: "找出句子裡的過去時間線索（yesterday, last night）",
+            speech: "Tom played basketball yesterday. Circle the time word in red.",
+            visualTitle: "Time Clues for Past Tense",
+            visualLines: ["yesterday / last night / two days ago", "Use red pen to circle the time clue in your sentence"]
+          }
+        ],
+        quiz: [
+          {
+            hint: "隨堂測驗 1：請用紅筆圈出正確的動詞（go / went）",
+            speech: "Yesterday, my family went to Tainan. Which word shows past tense?",
+            visualTitle: "Quiz 1: Yesterday, my family ____ to Tainan.",
+            visualLines: ["Options:  go    /    went", "Clue: Yesterday"]
+          },
+          {
+            hint: "隨堂測驗 2：把括號內的字改成過去式寫在白板上（eat）",
+            speech: "She ate an apple this morning. Try saying 'ate' clearly!",
+            visualTitle: "Quiz 2: She (eat) an apple this morning.",
+            visualLines: ["Change 'eat' to past tense on the board"]
+          }
+        ]
+      }
+    };
+
+    function setSpeechRate(rate) {
+      speechRate = rate;
+      document.getElementById("rate-slow").classList.toggle("active", rate < 0.8);
+      document.getElementById("rate-normal").classList.toggle("active", rate >= 0.8);
+    }
+
+    async function toggleRecording() {
+      const btn = document.getElementById("btn-record");
+      const playBtn = document.getElementById("btn-play-record");
+      const statusEl = document.getElementById("record-status");
+
+      if (!isRecording) {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          statusEl.innerText = "此瀏覽器或目前網址環境不支援麥克風錄音（發布為 HTTPS 網址後通常較順利）。";
+          return;
+        }
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          audioChunks = [];
+          mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.ondataavailable = (e) => {
+            if (e.data.size > 0) audioChunks.push(e.data);
+          };
+          mediaRecorder.onstop = () => {
+            const blob = new Blob(audioChunks, { type: "audio/webm" });
+            if (recordedAudioUrl) URL.revokeObjectURL(recordedAudioUrl);
+            recordedAudioUrl = URL.createObjectURL(blob);
+            playBtn.disabled = false;
+            statusEl.innerText = "錄音完成！按「▶ 聽聽自己念的」回放看看。";
+            stream.getTracks().forEach((t) => t.stop());
+          };
+          mediaRecorder.start();
+          isRecording = true;
+          btn.innerText = "⏹ 停止錄音";
+          statusEl.innerText = "正在錄音中，請清楚念出句子...";
+        } catch (err) {
+          statusEl.innerText = "無法使用麥克風，請確認瀏覽器是否已允許麥克風權限。";
+        }
+      } else {
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+        }
+        isRecording = false;
+        btn.innerText = "開始跟讀錄音";
+      }
+    }
+
+    function playRecording() {
+      if (!recordedAudioUrl) return;
+      const audio = new Audio(recordedAudioUrl);
+      audio.play();
+    }
+
+    function saveApiKey() {
+      const key = document.getElementById("api-key-input").value.trim();
+      localStorage.setItem("gemini_api_key_kids_wb", key);
+      document.getElementById("ai-status").innerText = key
+        ? "已儲存 API Key（僅保存在此瀏覽器）。"
+        : "尚未輸入 API Key 時，會自動使用內建示範課程。";
+    }
+
+    function loadSavedKey() {
+      const saved = localStorage.getItem("gemini_api_key_kids_wb") || "";
+      document.getElementById("api-key-input").value = saved;
+      if (saved) {
+        document.getElementById("ai-status").innerText = "已載入本機儲存的 API Key。";
+      }
+    }
+
+    async function generateWithGemini() {
+      const apiKey = document.getElementById("api-key-input").value.trim();
+      const topic = document.getElementById("topic-input").value.trim();
+      const statusEl = document.getElementById("ai-status");
+
+      if (!apiKey) {
+        statusEl.innerText = "請先輸入 Gemini API Key 再按生成。";
+        return;
+      }
+      if (!topic) {
+        statusEl.innerText = "請先輸入想學的自然或英文主題。";
+        return;
+      }
+
+      statusEl.innerText = "AI 正在幫國小高年級設計講解與隨堂題目中...";
+
+      const prompt = `
+你是一位親切的國小高年級（五、六年級）自然與英文互動白板老師。
+請針對主題「${topic}」（目前科目：${currentSubject === "science" ? "自然科" : "英文科"}），
+生成 1 個「概念講解」步驟與 1 個「隨堂小測驗」題目。
+請嚴格只回傳 JSON 格式（不要加 markdown 三個反引號），結構如下：
+{
+  "learn": {
+    "hint": "白板操作提示（25字內）",
+    "speech": "給小朋友聽的講解（英文科請用簡短好跟讀的英文例句，自然科用60字內繁體中文）",
+    "visualTitle": "白板標題",
+    "visualLines": ["白板重點1", "白板重點2"]
+  },
+  "quiz": {
+    "hint": "隨堂題目提示（25字內）",
+    "speech": "口語出題說明（60字內）",
+    "visualTitle": "題目畫面標題",
+    "visualLines": ["題目或選項1", "作答提示2"]
+  }
+}
+`;
+
+      try {
+        const res = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }]
+            })
+          }
+        );
+        const data = await res.json();
+        const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        const cleaned = rawText.replace(/```json|```/g, "").trim();
+        const parsed = JSON.parse(cleaned);
+
+        if (parsed.learn && parsed.quiz) {
+          bank[currentSubject].learn.unshift(parsed.learn);
+          bank[currentSubject].quiz.unshift(parsed.quiz);
+          currentIndex = 0;
+          renderView();
+          statusEl.innerText = `已新增「${topic}」的講解與測驗到第 1 關！`;
+        } else {
+          statusEl.innerText = "AI 回傳格式不完整，請再試一次。";
+        }
+      } catch (err) {
+        statusEl.innerText = "呼叫 Gemini API 失敗，請檢查 API Key 或網路連線。";
+      }
+    }
+
+    function setTool(tool) {
+      currentTool = tool;
+      document.getElementById("tool-blue").classList.toggle("active", tool === "blue");
+      document.getElementById("tool-red").classList.toggle("active", tool === "red");
+      document.getElementById("tool-eraser").classList.toggle("active", tool === "eraser");
+    }
+
+    function applyPenStyle() {
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.globalCompositeOperation = "source-over";
+      if (currentTool === "blue") {
+        ctx.strokeStyle = "#1d4ed8";
+        ctx.lineWidth = 4;
+      } else if (currentTool === "red") {
+        ctx.strokeStyle = "#dc2626";
+        ctx.lineWidth = 4;
+      } else if (currentTool === "eraser") {
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 22;
+      }
+    }
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      drawStepVisual();
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    canvas.addEventListener("mousedown", (e) => {
+      drawing = true;
+      applyPenStyle();
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    });
+    canvas.addEventListener("mousemove", (e) => {
+      if (!drawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    });
+    window.addEventListener("mouseup", () => {
+      drawing = false;
+    });
+
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      drawing = true;
+      applyPenStyle();
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(pos.x, pos.y);
+    }, { passive: false });
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      if (!drawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }, { passive: false });
+    window.addEventListener("touchend", () => {
+      drawing = false;
+    });
+
+    function clearBoard() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    function drawStepVisual() {
+      clearBoard();
+      const list = bank[currentSubject][currentMode];
+      const item = list[currentIndex];
+      if (!item) return;
+
+      ctx.save();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#111827";
+      ctx.font = "bold 22px 'Noto Sans TC', sans-serif";
+      ctx.fillText(item.visualTitle || "", 36, 56);
+
+      ctx.font = "18px 'Noto Sans TC', sans-serif";
+      ctx.fillStyle = "#374151";
+      (item.visualLines || []).forEach((line, idx) => {
+        ctx.fillText(line, 36, 102 + idx * 38);
+      });
+      ctx.restore();
+    }
+
+    function renderView() {
+      const list = bank[currentSubject][currentMode];
+      if (currentIndex >= list.length) currentIndex = 0;
+      const item = list[currentIndex];
+
+      document.getElementById("board-hint").innerText = item.hint;
+      document.getElementById("subtitle").innerText = item.speech;
+      document.getElementById("step-indicator").innerText =
+        `第 ${currentIndex + 1} 關 / 共 ${list.length} 關`;
+      drawStepVisual();
+    }
+
+    function setSubject(subj) {
+      currentSubject = subj;
+      currentIndex = 0;
+      setSpeechRate(subj === "english" ? 0.65 : 0.95);
+      document.getElementById("btn-science").classList.toggle("active", subj === "science");
+      document.getElementById("btn-english").classList.toggle("active", subj === "english");
+      renderView();
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      currentIndex = 0;
+      document.getElementById("btn-mode-learn").classList.toggle("active", mode === "learn");
+      document.getElementById("btn-mode-quiz").classList.toggle("active", mode === "quiz");
+      renderView();
+    }
+
+    function nextItem() {
+      const list = bank[currentSubject][currentMode];
+      if (currentIndex < list.length - 1) {
+        currentIndex++;
+        renderView();
+      }
+    }
+
+    function prevItem() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        renderView();
+      }
+    }
+
+    function speakCurrent() {
+      window.speechSynthesis.cancel();
+      const text = document.getElementById("subtitle").innerText;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = currentSubject === "english" ? "en-US" : "zh-TW";
+      utter.rate = speechRate;
+      window.speechSynthesis.speak(utter);
+    }
+
+    loadSavedKey();
+    resizeCanvas();
+    renderView();
+  </script>
+</body>
+</html>
